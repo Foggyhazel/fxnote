@@ -1,9 +1,10 @@
 # General Workflow (In Place Animation)
 
-- import character animation: character rig, fbx, usd, lop
+- import character animation: character rig, fbx, usd, lop, motion clip
 - create `Agent` with the shelf tool then packs all animation clips into it with `Add Clip` shelf tool or use `Agent Clip`
 - populate crowd with `Crowd Source` or `Populate` shelf tool
   - `crowd source` has an option to set initial velocity
+  - if you feed only points into the second input, it will use those points to copy agent instead
 - use `Simulate` shelf tool to setup dop network
 - now you get a dop network with crowd sim setup. It also has rbd for rag doll and agent states imported
 
@@ -43,3 +44,14 @@ if(speed < goal_speed){
 ---
 
 # Locomotion
+
+## Agent Setup
+
+- import character animation, disable locomotion so that it will now actually move
+- create agent, add clip
+- on the `Agent Clip` SOP, set `Locomotion Node` and `Locomotion Orient` which represent the translation and overall rotation of the clip's locomotion
+- `Agent Prep` 
+  - define mapping between character's joints and joints that are understood by crowd tool
+  - setup foot plant CHOP
+    > From documentation: This is useful for creating channels that describe when a character’s feet are planted, which can be used for foot locking in a crowd simulation.
+- `Collision Layer` and `Configure Joints` shelf tool: setup collision shape and joints rotation limit for later use in rag doll simulation
